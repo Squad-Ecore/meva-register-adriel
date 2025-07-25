@@ -2,36 +2,40 @@ package com.meva.finance.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
- * Represents the colunm "family" inside the database
+ * Represents the column "family" inside the database
  */
 @Entity
 @Table(name = "FAMILY")
 public class Family {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_family")
-    private Integer id;
+    @NotNull(message = "The idFamily is mandatory")
+    private Long idFamily;
 
-    @NotBlank
+    @NotBlank(message = "The description is mandatory")
     private String description;
+
+    protected Family() {}
+
+    public Family(String description, Long idFamily) {
+        this.description = description;
+        this.idFamily = idFamily;
+    }
 
     public Family(String description) {
         this.description = description;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getId() {
+        return idFamily;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
+    public void setId(Long id) {
+        this.idFamily = id;
     }
 
     public void setDescription(String description) {

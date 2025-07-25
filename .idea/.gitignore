@@ -1,3 +1,27 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+
+# Build directories
+target/
+
+# IDE configuration files
+*.iml
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Temporary system files
+*.class
+*.jar
+*.war
+*.ear
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Others
+*.out

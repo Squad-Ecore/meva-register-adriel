@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Contains the CRUD methods
  */
-public interface FamilyRepository extends JpaRepository<Family, Integer> {
+public interface FamilyRepository extends JpaRepository<Family, Long> {
 
+    boolean existsById(Long idFamily);
 }
