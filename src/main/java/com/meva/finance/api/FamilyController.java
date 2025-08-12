@@ -35,25 +35,9 @@ public class FamilyController {
         return familyService.createFamily(familyCreateDTO);
     }
 
-    @PutMapping("/{update}")
-    public ResponseEntity<String> changeFamily(@RequestBody @Valid FamilyDTO familyDTO) {
-        try {
-            Optional<Family> optionalFamily = familyRepository.findById(familyDTO.getIdFamily());
+    @PutMapping("/{id}")
+    public ResponseEntity<String> changeFamily(@PathVariable Long id, @RequestBody @Valid FamilyDTO familyDTO) {
 
-            if (!optionalFamily.isPresent()) {
-                return ResponseEntity.status(404).body("Family not found");
-            }
-
-            Family existingFamily = optionalFamily.get();
-            existingFamily.setDescription(familyDTO.getDescription());
-
-            familyRepository.save(existingFamily);
-
-            return ResponseEntity.ok("Family updated");
-
-        } catch (Exception e) {
-            log.error("Error while creating a family", e);
-            return ResponseEntity.status(500).body("Intern error while creating a family");
-        }
+        return familyService.changeFamily(id, familyDTO);
     }
 }

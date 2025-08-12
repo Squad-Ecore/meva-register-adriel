@@ -5,23 +5,16 @@ package com.meva.finance.api.dto;
  */
 public class FamilyDTO {
 
-    private Long idFamily;
+    private String description;
 
-        private String description;
-
-        public FamilyDTO() {
-        }
-
-        public FamilyDTO(String description, Long idFamily) {
-            this.description = description;
-        this.idFamily = idFamily;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-    public Long getIdFamily() {
-        return idFamily;
+    public FamilyDTO() {
     }
+
+    public FamilyDTO(String description) {
+        this.description = description;
     }
+
+    public String getDescription() {
+        return description;
+    }
+}

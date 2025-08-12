@@ -1,6 +1,7 @@
 package com.meva.finance.service;
 
 import com.meva.finance.api.dto.FamilyCreateDTO;
+import com.meva.finance.api.dto.FamilyDTO;
 import com.meva.finance.model.Family;
 import com.meva.finance.repository.FamilyRepository;
 import com.meva.finance.service.interfaces.ICreateService;
@@ -10,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
-public class FamilyService implements ICreateService<Family, FamilyCreateDTO> {
+public class FamilyService implements ICreateService<Family, FamilyCreateDTO, FamilyDTO> {
 
     @Autowired
     private FamilyRepository familyRepository;
@@ -35,6 +38,28 @@ public class FamilyService implements ICreateService<Family, FamilyCreateDTO> {
             }
 
             return ResponseEntity.ok("Family created");
+
+        } catch (Exception e) {
+            log.error("Error while creating a family", e);
+            return ResponseEntity.status(500).body("Intern error while creating a family");
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> changeFamily(Long familyId, FamilyDTO familyDTO) {
+        try {
+            Optional<Family> optionalFamily = familyRepository.findById(familyId);
+
+            if (!optionalFamily.isPresent()) {
+                return ResponseEntity.status(404).body("Family not found");
+            }
+
+            Family existingFamily = optionalFamily.get();
+            existingFamily.setDescription(familyDTO.getDescription());
+
+            familyRepository.save(existingFamily);
+
+            return ResponseEntity.ok("Family updated");
 
         } catch (Exception e) {
             log.error("Error while creating a family", e);
