@@ -2,8 +2,10 @@
 package com.meva.finance.api;
 
 import com.meva.finance.api.dto.FamilyCreateDTO;
+import com.meva.finance.api.dto.FamilyDTO;
 import com.meva.finance.model.Family;
 import com.meva.finance.repository.FamilyRepository;
+import com.meva.finance.service.FamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,52 +15,37 @@ import lombok.extern.slf4j.Slf4j;
 import javax.validation.Valid;
 import java.util.Optional;
 
-
 @Slf4j
 @RestController
 @RequestMapping("/family")
-public class Controller {
+public class FamilyController {
 
-    // TODO - The id should be inputted on the URL
+    // TODO - The id should be inputted on the URL (PUT endpoint)
     // TODO - Save the gender "M" or "F" in the database
-    // TODO - Ask if the user will create a new family or link to an existent one
+    // TODO - Create the documentation for all classes/methods
 
     @Autowired
     private FamilyRepository familyRepository;
+    @Autowired
+    private FamilyService familyService;
 
     @PostMapping("/{create}")
     public ResponseEntity<String> createFamily(@RequestBody @Valid FamilyCreateDTO familyCreateDTO) {
-        try {
-            Family newFamily = new Family(familyCreateDTO.getDescription(), familyCreateDTO.getIdFamily());
 
-            if (familyRepository.existsById(familyCreateDTO.getIdFamily()))
-                return ResponseEntity.status(409).body("This family already exists");
-
-            familyRepository.save(newFamily);
-            log.info("family created successfully");
-
-            return ResponseEntity.ok("Family created");
-
-        } catch (Exception e) {
-            log.error("Error while creating a family", e);
-            return ResponseEntity.status(500).body("Intern error while creating a family");
-        }
+        return familyService.createFamily(familyCreateDTO);
     }
 
-    /**
-     * Not important now.
-     */
     @PutMapping("/{update}")
-    public ResponseEntity<String> changeFamily(@RequestBody @Valid FamilyCreateDTO familyCreateDTO) {
+    public ResponseEntity<String> changeFamily(@RequestBody @Valid FamilyDTO familyDTO) {
         try {
-            Optional<Family> optionalFamily = familyRepository.findById(familyCreateDTO.getIdFamily());
+            Optional<Family> optionalFamily = familyRepository.findById(familyDTO.getIdFamily());
 
             if (!optionalFamily.isPresent()) {
                 return ResponseEntity.status(404).body("Family not found");
             }
 
             Family existingFamily = optionalFamily.get();
-            existingFamily.setDescription(familyCreateDTO.getDescription());
+            existingFamily.setDescription(familyDTO.getDescription());
 
             familyRepository.save(existingFamily);
 

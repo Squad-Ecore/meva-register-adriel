@@ -1,18 +1,18 @@
 package com.meva.finance.api.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 /**
  * Used to handle the data sent to create or update a family.
+ * The `idFamily` attribute is included only for validation purposes and
+ * should be set to 0 when creating a new family.
  */
 public class FamilyCreateDTO {
 
-    @NotNull(message = "The idFamily is mandatory")
     private Long idFamily;
 
-    @NotBlank(message = "The description is mandatory")
     private String description;
+
+    public FamilyCreateDTO() {
+    }
 
     public FamilyCreateDTO(String description, Long idFamily) {
         this.description = description;
